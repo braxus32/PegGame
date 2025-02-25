@@ -1,12 +1,22 @@
+<div class="sidebar"></div>
 <div class="game-board-container">
     <img class="game-board" src="game-board.svg" alt="game-board">
     <div class="peg-grid-container">
         @for (row of [].constructor(this.gameBoard.numRows); track $index) {
             <div class="row">
-            @for (peg of [].constructor($index); track peg) {
-                <div class="dot"></div>
+            @for (hole of [].constructor($index+1); track $index) {
+                <app-peg-hole 
+                    [pegHole]="this.getNextHole()"
+                    [gameComponent]="this">
+                </app-peg-hole>
             }
             </div>
         }
     </div>
+</div>
+<div class="controls">
+    <label for="num-rows">Number of Rows (minimum 3): </label>
+    <input id="num-rows" type="number" value="5" min="3" (input)="updateNumRows($event)">
+    
+    <button id="start-alg" (click)="dummy()">Run Solver</button>
 </div>

@@ -9,13 +9,12 @@ export class GameLogicService {
   constructor() { }
 
   defaultBoard: GameBoard = {
-    numRows: 5,
-    numPegs: 0,
-
+    numRows: 5
   }
 
-  getNewBoard(): GameBoard {
-    return this.defaultBoard;
+  getNewBoard(nRows: number): GameBoard {
+    let gameBoard: GameBoard = {numRows: nRows};
+    return gameBoard;
   }
 
   makeMove(from: number, to:number) {

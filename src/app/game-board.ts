@@ -1,5 +1,3 @@
 export interface GameBoard {
-    numRows: number;
-    numPegs: number;
-    
+    numRows: number;    
 }
