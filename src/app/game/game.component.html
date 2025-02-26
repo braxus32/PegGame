@@ -3,7 +3,7 @@
     <img class="game-board" src="game-board.svg" alt="game-board">
     <div class="peg-grid-container">
         @for (row of [].constructor(this.gameBoard.numRows); track $index) {
-            <div class="row">
+            <div class="row" [id]=$index>
             @for (hole of [].constructor($index+1); track $index) {
                 <app-peg-hole 
                     [pegHole]="this.getNextHole()"

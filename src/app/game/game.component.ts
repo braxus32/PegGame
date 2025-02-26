@@ -1,4 +1,4 @@
-import { Component, Inject, input, Input } from '@angular/core';
+import { Attribute, Component, HostBinding, Inject, Renderer2, ElementRef, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameLogicService } from '../game-logic.service';
 import { GameBoard } from '../game-board';
@@ -100,7 +100,8 @@ export class PegComponent {
   `,
   styleUrl: './game.component.css'
 })
-export class PegHoleComponent {
+export class PegHoleComponent implements OnChanges {
+
   @Input() pegHole!: PegHole; 
    
   @Input() gameComponent!: GameComponent;
@@ -108,11 +109,27 @@ export class PegHoleComponent {
   offsetLeft: number | undefined;
   offsetTop: number | undefined;
 
-  constructor() {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const self = this.elementRef.nativeElement;
+    const height = self.offsetHeight;
+    this.renderer.setStyle(self, 'width', `${height}px`);
+    console.log("Updated");
+  }
+
+  ngOnChange() {
+    
+  }
 
   holeClicked() {
     this.gameComponent?.slotClicked(this.pegHole.num);
-    console.log(this.gameComponent);
+  }
+
+  
+  adjustWidth() {
+    
+
   }
 
 }
