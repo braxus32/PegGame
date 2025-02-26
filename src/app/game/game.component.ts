@@ -24,6 +24,8 @@ export class GameComponent {
 
   curHole: number = 0;
 
+  isDisabled: boolean | undefined;
+
   constructor() {
     this.calcNumHoles();
     this.createPegHoles();
@@ -63,14 +65,26 @@ export class GameComponent {
   }
 
   updateNumRows(e: Event) {
-    let target = e.target as HTMLInputElement;
-    this.gameBoard = this.gameLogicService.getNewBoard(Number(target.value));
-    this.calcNumHoles();
-    this.createPegHoles();
+    const target = e.target as HTMLInputElement;
+    const newNumRows = Number(target.value);
+    if (2 < newNumRows && newNumRows < 51) {
+      this.gameBoard = this.gameLogicService.getNewBoard(newNumRows);
+      this.calcNumHoles();
+      this.createPegHoles();
+    }
   }
 
-  dummy() {
+  runAlg() {
+    this.disableSettingsForm();
     console.log("U DUMB");
+  }
+
+  disableSettingsForm() {
+    this.isDisabled = true;
+  }
+
+  resetGame() {
+    window.location.reload();
   }
 }
 
@@ -91,12 +105,6 @@ export class PegComponent {
   imports:[],
   template: `
     <div class="peg-hole"><button (click)="holeClicked()"></button></div>
-    <script>
-      const el = document.getElementByClass(PegHoleComponent);
-      const rect = el.getBoundingClientRect();
-      this.offsetLeft = rect.left;
-      this.offsetTop = rect.top;
-    </script>
   `,
   styleUrl: './game.component.css'
 })
@@ -115,21 +123,13 @@ export class PegHoleComponent implements OnChanges {
     const self = this.elementRef.nativeElement;
     const height = self.offsetHeight;
     this.renderer.setStyle(self, 'width', `${height}px`);
-    console.log("Updated");
-  }
 
-  ngOnChange() {
-    
+    const rect = self.getBoundingClientRect();
+    this.offsetLeft = rect.left;
+    this.offsetTop = rect.top;
   }
 
   holeClicked() {
     this.gameComponent?.slotClicked(this.pegHole.num);
   }
-
-  
-  adjustWidth() {
-    
-
-  }
-
 }

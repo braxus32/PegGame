@@ -15,8 +15,11 @@
     </div>
 </div>
 <div class="controls">
-    <label for="num-rows">Number of Rows (minimum 3): </label>
-    <input id="num-rows" type="number" value="5" min="3" (input)="updateNumRows($event)">
-    
-    <button id="start-alg" (click)="dummy()">Run Solver</button>
+    <form name="game-settings">
+        <label for="num-rows">Number of Rows (3-50): </label>
+        <input [attr.disabled]="isDisabled" id="num-rows" type="number" value="5" min="3" max="50" (input)="updateNumRows($event)">
+        
+        <button id="start-alg" type="button" (click)="runAlg()">Run Solver</button>
+        <button id="reset" type="button" (click)="resetGame()">Reset</button>
+    </form>
 </div>
