@@ -28,6 +28,8 @@ export class GameComponent {
 
   slotSelected: number = 0;
 
+  frameList: object | undefined;
+
   constructor() {
     this.calcNumHoles();
     this.createPegHoles();
@@ -90,7 +92,16 @@ export class GameComponent {
       }
     }
 
+    this.frameList = this.gameLogicService.getFrameList(this.slotSelected);
+    console.log(this.frameList);
 
+    for (const frame of Object.values(this.frameList)) {
+      for (const action of frame) {
+        const updatedSlot = action.slotNum;
+        const slotAction = action.slotState;
+        this.pegHoleList[updatedSlot].state = slotAction;
+      }
+    }
   }
 
   disableSettingsForm() {
