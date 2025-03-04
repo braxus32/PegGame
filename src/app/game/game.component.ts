@@ -8,7 +8,7 @@ import { PegHole } from '../peg-hole';
 @Component({
   standalone: true,
   selector: 'app-game',
-  imports: [CommonModule, forwardRef(() => PegComponent), forwardRef(() => PegHoleComponent)],
+  imports: [CommonModule, forwardRef(() => PegHoleComponent)],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css'
 })
@@ -90,7 +90,7 @@ export class GameComponent {
       }
     }
 
-    
+
   }
 
   disableSettingsForm() {
@@ -103,21 +103,8 @@ export class GameComponent {
 }
 
 @Component({
-  selector: 'app-peg',
-  imports: [],
-  template: '<div class="dot"></div>',
-  styleUrl: './game.component.css'
-})
-export class PegComponent {
-  
-  @Input() num: number = -1;
-
-
-}
-
-@Component({
   selector: 'app-peg-hole',
-  imports:[PegComponent],
+  imports:[],
   template: `
     <div class="peg-hole">
     @switch (pegHole.state) {
