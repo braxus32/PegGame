@@ -19,7 +19,9 @@
         <label for="num-rows">Number of Rows (3-50): </label>
         <input [attr.disabled]="isDisabled" id="num-rows" type="number" value="5" min="3" max="50" (input)="updateNumRows($event)">
         
-        <button id="start-alg" type="button" (click)="runAlg()">Run Solver</button>
+        <button [attr.disabled]="isDisabled" id="start-alg" type="button" (click)="runAlg()">Run Solver</button>
         <button id="reset" type="button" (click)="resetGame()">Reset</button>
+        
+        @if (slotSelected !== undefined) {<p>Start alg with slot {{slotSelected}} empty</p>}
     </form>
 </div>

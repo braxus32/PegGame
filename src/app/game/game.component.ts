@@ -26,6 +26,8 @@ export class GameComponent {
 
   isDisabled: boolean | undefined;
 
+  slotSelected: number = 0;
+
   constructor() {
     this.calcNumHoles();
     this.createPegHoles();
@@ -42,6 +44,7 @@ export class GameComponent {
       const pegHole: PegHole = {
         num: hole,
         isOccupied: false,
+        state: 'button',
       }
       tempList.push(pegHole);
     }
@@ -61,7 +64,10 @@ export class GameComponent {
   }
 
   slotClicked(slotNum: number) {
-    console.log(slotNum);
+    if (this.slotSelected !== undefined) {
+      this.pegHoleList[this.slotSelected].state = 'button';
+    }
+    this.slotSelected = slotNum;
   }
 
   updateNumRows(e: Event) {
@@ -76,7 +82,15 @@ export class GameComponent {
 
   runAlg() {
     this.disableSettingsForm();
-    console.log("U DUMB");
+    for (let pegHole of this.pegHoleList) {
+      if (pegHole.num != this.slotSelected) {
+        pegHole.state = 'default';
+      } else {
+        pegHole.state = 'empty';
+      }
+    }
+
+    
   }
 
   disableSettingsForm() {
@@ -91,20 +105,31 @@ export class GameComponent {
 @Component({
   selector: 'app-peg',
   imports: [],
-  template: '<div class="dot">{{num}}</div>',
+  template: '<div class="dot"></div>',
   styleUrl: './game.component.css'
 })
 export class PegComponent {
   
   @Input() num: number = -1;
 
+
 }
 
 @Component({
   selector: 'app-peg-hole',
-  imports:[],
+  imports:[PegComponent],
   template: `
-    <div class="peg-hole"><button (click)="holeClicked()"></button></div>
+    <div class="peg-hole">
+    @switch (pegHole.state) {
+      @case ('button') {<button (click)="holeClicked()"></button>}
+      @case ('selected') {<button style="background-color: dimgray;" disabled></button>}
+      @case ('empty') {<div class="dot" style="background-color: dimgray;"></div>}
+      @default {<div class="dot" style="background-color: mediumseagreen;"></div>}
+      @case ('jumped') {<div class="dot" style="background-color: firebrick;"></div>}
+      @case ('moved') {<div class="dot" style="background-color: dodgerblue;"></div>}
+    }
+    
+    </div>
   `,
   styleUrl: './game.component.css'
 })
@@ -131,5 +156,6 @@ export class PegHoleComponent implements OnChanges {
 
   holeClicked() {
     this.gameComponent?.slotClicked(this.pegHole.num);
+    this.pegHole.state = 'selected';
   }
 }
