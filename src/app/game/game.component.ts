@@ -30,6 +30,9 @@ export class GameComponent {
 
   frameList: object | undefined;
 
+  maxAlgStepDelay: number = 1000;
+  algStepDelay: number = 1000;
+
   constructor() {
     this.calcNumHoles();
     this.createPegHoles();
@@ -82,7 +85,7 @@ export class GameComponent {
     }
   }
 
-  runAlg() {
+  async runAlg() {
     this.disableSettingsForm();
     for (let pegHole of this.pegHoleList) {
       if (pegHole.num != this.slotSelected) {
@@ -93,15 +96,31 @@ export class GameComponent {
     }
 
     this.frameList = this.gameLogicService.getFrameList(this.slotSelected);
-    console.log(this.frameList);
 
     for (const frame of Object.values(this.frameList)) {
-      for (const action of frame) {
-        const updatedSlot = action.slotNum;
-        const slotAction = action.slotState;
-        this.pegHoleList[updatedSlot].state = slotAction;
-      }
+      this.algStep(frame);
+      await this.delay();
     }
+  }
+
+  async algStep(frame: any) {
+    for (const action of frame) {
+      const updatedSlot = action.slotNum;
+      const slotAction = action.slotState;
+      this.pegHoleList[updatedSlot].state = slotAction;
+      console.log(`Action: ${updatedSlot} ${slotAction}`);
+    }
+    console.log("Post loop");
+  }
+
+  delay() {
+    return new Promise(resolve => setTimeout(resolve, this.algStepDelay));
+  }
+
+  updateAlgSpeed(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const delayMod = Number(target.value) / 100;
+    this.algStepDelay = this.maxAlgStepDelay * (1/delayMod);
   }
 
   disableSettingsForm() {
@@ -124,7 +143,7 @@ export class GameComponent {
       @case ('empty') {<div class="dot" style="background-color: dimgray;"></div>}
       @default {<div class="dot" style="background-color: mediumseagreen;"></div>}
       @case ('jumped') {<div class="dot" style="background-color: firebrick;"></div>}
-      @case ('moved') {<div class="dot" style="background-color: dodgerblue;"></div>}
+      @case ('moved') {<div class="dot" style="background-color: mediumorchid;"></div>}
     }
     
     </div>
