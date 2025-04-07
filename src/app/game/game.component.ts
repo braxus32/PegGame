@@ -1,9 +1,11 @@
 import { Attribute, Component, HostBinding, Inject, Renderer2, ElementRef, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { GameLogicService } from '../game-logic.service';
 import { GameBoard } from '../game-board';
 import { forwardRef } from "@angular/core";
 import { PegHole } from '../peg-hole';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -95,12 +97,30 @@ export class GameComponent {
       }
     }
 
-    this.frameList = this.gameLogicService.getFrameList(this.slotSelected);
-
-    for (const frame of Object.values(this.frameList)) {
-      this.algStep(frame);
-      await this.delay();
-    }
+    let response$ = this.gameLogicService.getFrameList(this.slotSelected, this.gameBoard.numRows);
+    response$.pipe(map(res => res.map((nums: any[]) =>
+      JSON.parse(`[
+        [
+          {"slotNum": ${nums[0]}, "slotState": "moved"}
+        ],
+        [
+          {"slotNum": ${nums[0]}, "slotState": "empty"},
+          {"slotNum": ${nums[1]}, "slotState": "jumped"},
+          {"slotNum": ${nums[2]}, "slotState": "moved"}
+        ],
+        [
+          {"slotNum": ${nums[1]}, "slotState": "empty"},
+          {"slotNum": ${nums[2]}, "slotState": "default"}
+        ]
+      ]`)))
+    ).subscribe(async processedFrameList => {
+      for (const frameTrip of processedFrameList) {
+        for (const frame of frameTrip) {
+          this.algStep(frame);
+          await this.delay();
+        }
+      }
+    })
   }
 
   async algStep(frame: any) {

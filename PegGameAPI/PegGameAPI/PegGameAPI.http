@@ -1,0 +1,11 @@
+@PegGameAPI_HostAddress = http://localhost:5048
+
+GET {{PegGameAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{PegGameAPI_HostAddress}}/
+Accept: application/json
+
+###

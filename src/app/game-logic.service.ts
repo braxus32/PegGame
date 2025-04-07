@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GameBoard } from './game-board';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.development';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +10,14 @@ import { GameBoard } from './game-board';
 export class GameLogicService {
 
   constructor() { }
+
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiURL;
+
+  private get(addendum: string): Observable<any> {
+    console.log("GET: " + this.apiUrl + addendum)
+    return this.http.get(this.apiUrl + addendum);
+  }
 
   defaultBoard: GameBoard = {
     numRows: 5
@@ -23,9 +34,9 @@ export class GameLogicService {
     );
   }
 
-  getFrameList(emptySlot: number): object {
-    const frameList = JSON.parse(this.defaultFrameList);
-    return frameList;
+  getFrameList(emptySlot: number, numRows: number): Observable<any> {
+    let raw$ = this.get(`/${emptySlot}/${numRows}`);
+    return raw$;
   }
 
   defaultFrameList: string = `[
