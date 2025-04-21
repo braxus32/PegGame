@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PegGameAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b717b80f2b0d40b3a2b27cf282c80535aa8c3d26")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f54b3f8d7e2c7427cd817489bc470e6d7da086b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PegGameAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PegGameAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
