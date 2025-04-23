@@ -5,11 +5,13 @@ namespace PegGameAPI.Tests
   [TestClass]
   public sealed class SolutionGeneratorTest
   {
+    RandomSolutionGenerator Generator = new RandomSolutionGenerator();
+
     [TestMethod]
     public void RandomGeneratorNullTest()
     {
-      var generator = new RandomSolutionGenerator();
-      Assert.IsNotNull(generator);
+      Assert.IsNotNull(Generator);
     }
+
   }
 }

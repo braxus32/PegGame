@@ -91,7 +91,7 @@ namespace PegGameAPI.Algs
       this.viableEmpties.Add(move[1]);
       this.viableEmpties.Remove(move[2]);
       CleanUp(move[2]);
-      this.moveList.Clear();
+      this.validMoves.Clear();
     }
 
     private int[] GetRandomMove()
@@ -115,7 +115,7 @@ namespace PegGameAPI.Algs
         int farUL = index - 2 * rowNum + 1;
         if (this.slotStates[nearUL] && this.slotStates[farUL])
         {
-          this.validMoves.Add([farUL, nearUL, index]);
+          AddMove(farUL, nearUL, index);
         }
 
         // Check left
@@ -123,7 +123,7 @@ namespace PegGameAPI.Algs
         int farL = index - 2;
         if (this.slotStates[nearL] && this.slotStates[farL])
         {
-          this.validMoves.Add([farL, nearL, index]);
+          AddMove(farL, nearL, index);
         }
       }
       // Check if right side is clear
@@ -134,7 +134,7 @@ namespace PegGameAPI.Algs
         int farUR = index - 2 * rowNum + 3;
         if (this.slotStates[nearUR] && this.slotStates[farUR])
         {
-          this.validMoves.Add([farUR, nearUR, index]);
+          AddMove(farUR, nearUR, index);
         }
 
         // Check right
@@ -142,7 +142,7 @@ namespace PegGameAPI.Algs
         int farR = index + 2;
         if (this.slotStates[nearR] && this.slotStates[farR])
         {
-          this.validMoves.Add([farR, nearR, index]);
+          AddMove(farR, nearR, index);
         }
       }
       // Check if bottom is clear
@@ -153,7 +153,7 @@ namespace PegGameAPI.Algs
         int farLL = index + 2 * rowNum + 1;
         if (this.slotStates[nearLL] && this.slotStates[farLL])
         {
-          this.validMoves.Add([farLL, nearLL, index]);
+          AddMove(farLL, nearLL, index);
         }
 
         // Check lower right
@@ -161,9 +161,15 @@ namespace PegGameAPI.Algs
         int farLR = index + 2 * rowNum + 3;
         if (this.slotStates[nearLR] && this.slotStates[farLR])
         {
-          this.validMoves.Add([farLR, nearLR, index]);
+          AddMove(farLR, nearLR, index);
         }
       }
+    }
+
+    private void AddMove(int moved, int jumped, int filled)
+    {
+      this.validMoves.Add([moved, jumped, filled]);
+      Console.WriteLine($"Added move: {moved} {jumped} {filled}");
     }
 
     private void CleanUp(int index)
