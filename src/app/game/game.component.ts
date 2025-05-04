@@ -1,16 +1,16 @@
 import { Attribute, Component, HostBinding, Inject, Renderer2, ElementRef, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
+import { forwardRef } from "@angular/core";
 import { GameLogicService } from '../game-logic.service';
 import { GameBoard } from '../game-board';
-import { forwardRef } from "@angular/core";
 import { PegHole } from '../peg-hole';
+import { SolutionExplorerComponent } from '../solution-explorer/solution-explorer.component';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'app-game',
-  imports: [CommonModule, forwardRef(() => PegHoleComponent)],
+  imports: [CommonModule, SolutionExplorerComponent, forwardRef(() => PegHoleComponent)],
   templateUrl: './game.component.html',
   styleUrl: './game.component.css'
 })
@@ -23,8 +23,6 @@ export class GameComponent {
   numPegHoles: number = 0;
 
   pegHoleList: PegHole[] = [];
-
-  curHole: number = 0;
 
   isDisabled: boolean | undefined;
 
@@ -57,17 +55,6 @@ export class GameComponent {
     }
 
     this.pegHoleList = tempList;
-  }
-
-  getNextHole() { //for some reason this method runs twice even when pegHoleList is not updated
-    let nextHole = this.pegHoleList[this.curHole];
-
-    if (this.curHole === this.pegHoleList.length - 1) {
-      this.curHole = 0;
-    } else {
-      this.curHole += 1;
-    }
-    return nextHole;
   }
 
   slotClicked(slotNum: number) {
@@ -120,7 +107,7 @@ export class GameComponent {
           await this.delay();
         }
       }
-    })
+    });
   }
 
   async algStep(frame: any) {
@@ -179,12 +166,16 @@ export class PegHoleComponent implements OnChanges {
   offsetLeft: number | undefined;
   offsetTop: number | undefined;
 
+  sqrt3 = Math.sqrt(3);
+
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const self = this.elementRef.nativeElement;
     const height = self.offsetHeight;
+    const xOffset = this.sqrt3 * (height / 2);
     this.renderer.setStyle(self, 'width', `${height}px`);
+    // this.renderer.setStyle(self.parentElement, 'margin-top', `${-xOffset}px`);
 
     const rect = self.getBoundingClientRect();
     this.offsetLeft = rect.left;

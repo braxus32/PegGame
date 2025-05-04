@@ -1,12 +1,12 @@
 <div class="sidebar"></div>
 <div class="game-board-container">
-    <img class="game-board" src="game-board.svg" alt="game-board">
+    <img src="game-board.svg" alt="game-board">
     <div class="peg-grid-container">
-        @for (row of [].constructor(this.gameBoard.numRows); track $index) {
+        @for (row of [].constructor(this.gameBoard.numRows); let i = $index; track $index) {
             <div class="row" [id]=$index>
             @for (hole of [].constructor($index+1); track $index) {
                 <app-peg-hole 
-                    [pegHole]="this.getNextHole()"
+                    [pegHole]="this.pegHoleList[(i*(i+1))/2+$index]"
                     [gameComponent]="this">
                 </app-peg-hole>
             }
@@ -26,7 +26,9 @@
         <br>
         <label for="speed-modifier-input">Alg speed: </label>
         <span class="pct-symbol-padding">
-            <input id="speed-modifier-input" type="number" value="100" min="100" max="500" step="100" (input)="updateAlgSpeed($event)">
-        </span>
+            <input id="speed-modifier-input" type="number" value="100" min="100" max="1000" step="100" (input)="updateAlgSpeed($event)">
+        </span>        
     </form>
+    <br>
+    <app-solution-explorer></app-solution-explorer>
 </div>

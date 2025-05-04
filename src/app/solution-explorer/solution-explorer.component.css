@@ -1,0 +1,35 @@
+.scroll-container {
+    height: 100px;
+    width: 300px;
+    border-radius: 5px;
+    /*
+    background-color: #3d365e;
+    box-shadow: inset 0 0 8px 2px rgba(0, 0, 0, 0.5);
+    */
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    padding: 10px;
+
+    /* hide scrollbar across platforms */
+    -ms-overflow-style: none; /*edge*/
+    scrollbar-width: none; /*firefox*/
+}
+
+/* Hide scrollbar for chrome/safari/opera */
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.solution-card {
+    list-style-type: none;
+    height: 80px;
+    width: 280px;
+    border-radius: 5px;
+    background: linear-gradient(#60578f, #403961); /*
+    border-color: #383f69;
+    border-style: outset;
+    border-width: 4px; */
+    box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.5);
+    scroll-snap-align: center;
+    margin-top: 50px;
+}
