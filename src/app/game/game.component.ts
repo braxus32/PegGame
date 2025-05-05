@@ -153,7 +153,6 @@ export class GameComponent {
       @case ('jumped') {<div class="dot" style="background-color: firebrick;"></div>}
       @case ('moved') {<div class="dot" style="background-color: mediumorchid;"></div>}
     }
-    
     </div>
   `,
   styleUrl: './game.component.css'
@@ -166,7 +165,7 @@ export class PegHoleComponent implements OnChanges {
 
   @Input() gameComponent!: GameComponent;
 
-  sqrt3 = Math.sqrt(3);
+  sqrt3 = 1.732;
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
@@ -175,11 +174,7 @@ export class PegHoleComponent implements OnChanges {
     const xOffset = this.sqrt3 * (this.pegHole.height/2) - this.pegHole.height/2;
     this.renderer.setStyle(self, 'width', `${this.pegHole.height}px`);
     this.renderer.setStyle(self, 'height', `${this.pegHole.height}px`);
-    this.renderer.setStyle(self, 'margin-top', `${-xOffset/2*this.rowNum}px`);
-
-    const rect = self.getBoundingClientRect();
-    // this.offsetLeft = rect.left;
-    // this.offsetTop = rect.top;
+    this.renderer.setStyle(self, 'margin-top', `${(-xOffset/2)*this.rowNum}px`);
   }
 
   holeClicked() {
