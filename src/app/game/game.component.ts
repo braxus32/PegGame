@@ -50,6 +50,7 @@ export class GameComponent {
         num: hole,
         isOccupied: false,
         state: 'button',
+        height: 510/this.gameBoard.numRows,
       }
       tempList.push(pegHole);
     }
@@ -160,11 +161,10 @@ export class GameComponent {
 export class PegHoleComponent implements OnChanges {
 
   @Input() pegHole!: PegHole; 
-   
-  @Input() gameComponent!: GameComponent;
 
-  offsetLeft: number | undefined;
-  offsetTop: number | undefined;
+  @Input() rowNum!: number;
+
+  @Input() gameComponent!: GameComponent;
 
   sqrt3 = Math.sqrt(3);
 
@@ -172,14 +172,14 @@ export class PegHoleComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const self = this.elementRef.nativeElement;
-    const height = self.offsetHeight;
-    const xOffset = this.sqrt3 * (height / 2);
-    this.renderer.setStyle(self, 'width', `${height}px`);
-    // this.renderer.setStyle(self.parentElement, 'margin-top', `${-xOffset}px`);
+    const xOffset = this.sqrt3 * (this.pegHole.height/2) - this.pegHole.height/2;
+    this.renderer.setStyle(self, 'width', `${this.pegHole.height}px`);
+    this.renderer.setStyle(self, 'height', `${this.pegHole.height}px`);
+    this.renderer.setStyle(self, 'margin-top', `${-xOffset/2*this.rowNum}px`);
 
     const rect = self.getBoundingClientRect();
-    this.offsetLeft = rect.left;
-    this.offsetTop = rect.top;
+    // this.offsetLeft = rect.left;
+    // this.offsetTop = rect.top;
   }
 
   holeClicked() {

@@ -4,4 +4,5 @@ export interface PegHole {
     num: number;
     isOccupied: boolean;
     state: string;
+    height: number;
 }

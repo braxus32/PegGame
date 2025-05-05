@@ -7,6 +7,7 @@
             @for (hole of [].constructor($index+1); track $index) {
                 <app-peg-hole 
                     [pegHole]="this.pegHoleList[(i*(i+1))/2+$index]"
+                    [rowNum]="i"
                     [gameComponent]="this">
                 </app-peg-hole>
             }
